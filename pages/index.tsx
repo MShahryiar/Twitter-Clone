@@ -4,8 +4,15 @@ import Image from 'next/image'
 import Feed from '../components/Feed'
 import SideBar from '../components/Sidebar'
 import Widgets from '../components/Widgets'
+import { Tweet } from '../typings'
+import { fetchTweets } from '../utils/fetchTweets'
 
-const Home: NextPage = () => {
+interface Props{
+  tweets:Tweet[]
+}
+
+const Home = ({tweets}:Props) => {
+  
   return (
     <div className="mx-auto max-h-screen overflow-hidden lg:max-w-8xl">
       <Head>
@@ -16,7 +23,7 @@ const Home: NextPage = () => {
         {/* Sidebar */}
         <SideBar/>
         {/* Feed */}
-        <Feed/>
+        <Feed tweets={tweets}/>
         {/* Widgets */}
         <Widgets/>
       </main>
@@ -27,5 +34,11 @@ const Home: NextPage = () => {
 export default Home
 
 export const getServerSideProps : GetServerSideProps = async (context) => {
-  const tweets = await fetchTweets():
+  const tweets = await fetchTweets();
+
+  return {
+    props:{
+      tweets,
+    }
+  }
 }
