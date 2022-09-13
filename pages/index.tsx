@@ -1,6 +1,7 @@
 import type { GetServerSideProps, NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
+import { Toaster } from 'react-hot-toast'
 import Feed from '../components/Feed'
 import SideBar from '../components/Sidebar'
 import Widgets from '../components/Widgets'
@@ -19,6 +20,9 @@ const Home = ({tweets}:Props) => {
         <title>Twitter 2.0</title>
       </Head>
       {/* <h1>Hello, Next, Twitter, Sanity. Yayy</h1> */}
+
+      <Toaster/>
+
       <main className='grid grid-cols-9'>
         {/* Sidebar */}
         <SideBar/>
