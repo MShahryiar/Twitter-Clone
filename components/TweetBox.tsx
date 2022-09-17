@@ -1,8 +1,15 @@
 import { CalendarIcon, EmojiHappyIcon, LocationMarkerIcon, PhotographIcon, SearchCircleIcon } from '@heroicons/react/outline'
 import { useSession } from 'next-auth/react';
 import React, { useRef, useState } from 'react'
+import toast from 'react-hot-toast';
+import { Tweet, TweetBody } from '../typings';
+import { fetchTweets } from '../utils/fetchTweets';
 
-function TweetBox() {
+interface Props{
+    setTweets:React.Dispatch<React.SetStateAction<Tweet[]>>
+}
+
+function TweetBox({setTweets}:Props) {
    
     const [tweet, setTweet] = useState<string>("");
     const [image, setImage] = useState<string>("")
@@ -20,7 +27,36 @@ function TweetBox() {
             imageInputRef.current.value = ''
             setIsImagBoxOpen(false);
     }
-    
+    const postTweet = async() => {
+            const tweetInfo: TweetBody = {
+                text:tweet,
+                username:session?.user?.name || 'Unknown User',
+                profileimg: session?.user?.image || 'https://links.papareact.com/gll',
+                image:image,
+            }
+            const result = await fetch(`/api/addTweet`,{
+                body: JSON.stringify(tweetInfo),
+                method:'POST',
+            })
+
+            const json = await result.json()
+
+            const newTweets = await fetchTweets();
+            setTweets(newTweets)
+
+            toast('Tweet Posted',{
+                icon:'✔'
+            })
+            return json
+    }
+    const handleSubmit = (e:React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+            e.preventDefault();
+            postTweet();
+
+            setTweet('')
+            setImage('')
+            setIsImagBoxOpen(false)
+    }
   return (
     <div className='flex space-x-2 p-2 '>
         {/* {session?.user?.email && <p>You are logged in as {session?.user?.email}</p>} */}
@@ -38,7 +74,7 @@ function TweetBox() {
                         <CalendarIcon className='h-5 w-5 cursor-pointer transition-transform duration-150 ease-out hover:scale-150'/>
                         <LocationMarkerIcon className='h-5 w-5 cursor-pointer transition-transform duration-150 ease-out hover:scale-150'/>
                     </div>
-                    <button disabled={!tweet || !session} className='bg-twitter text-white font-bold rounded-full px-5 py-2 disabled:opacity-40' >Tweet</button>
+                    <button onClick={handleSubmit} disabled={!tweet || !session} className='bg-twitter text-white font-bold rounded-full px-5 py-2 disabled:opacity-40' >Tweet</button>
                 </div>
                     {isImageBoxOpen && (
 
