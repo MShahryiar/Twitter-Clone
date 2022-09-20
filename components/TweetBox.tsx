@@ -62,7 +62,9 @@ function TweetBox({setTweets}:Props) {
         {/* {session?.user?.email && <p>You are logged in as {session?.user?.email}</p>} */}
         {/* <img src={session?.user?.image||"https://links.papareact.com/gll"} */}
          <img src="https://links.papareact.com/gll"
+         
         className='h-14 w-14 rounded-full object-cover'/>
+    
         <div className='flex flex-1 pl-2  items-center'>
             <form className='flex- flex-1 flex-col'>
                 <input type='text'  value={tweet} onChange={(e)=>setTweet(e.target.value)} className='text-gray-800 h-24 w-full outline-none placeholder:text-xl' placeholder="What's Happening?"/>

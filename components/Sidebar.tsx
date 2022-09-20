@@ -17,7 +17,7 @@ function SideBar() {
         <SidebarRow Icon={UserIcon} onClick={session?signOut:signIn} title={session?"Sign Out":"Sign In"}/>
         <SidebarRow Icon={DotsCircleHorizontalIcon} title="More"/>
 
-
+    
     </div>
   )
 }
